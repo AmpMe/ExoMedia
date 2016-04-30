@@ -15,6 +15,7 @@ import java.util.List;
 public class StartupListAdapter extends BaseAdapter {
     public static final int INDEX_AUDIO_PLAYBACK = 0;
     public static final int INDEX_VIDEO_PLAYBACK = 1;
+    public static final int INDEX_RECYCLER_VIEW = 2;
 
     private List<String> examplePages;
     private LayoutInflater inflater;
@@ -23,6 +24,7 @@ public class StartupListAdapter extends BaseAdapter {
         examplePages = new ArrayList<>();
         examplePages.add(INDEX_AUDIO_PLAYBACK, "Audio Playback");
         examplePages.add(INDEX_VIDEO_PLAYBACK, "Video Playback");
+        examplePages.add(INDEX_RECYCLER_VIEW, "Video RecyclerView Example");
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }

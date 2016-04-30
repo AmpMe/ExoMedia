@@ -33,6 +33,10 @@ public class StartupActivity extends AppCompatActivity implements AdapterView.On
                 showVideoSelectionActivity();
                 break;
 
+            case StartupListAdapter.INDEX_RECYCLER_VIEW:
+                showRecyclerVideoActivity();
+                break;
+
             default:
         }
     }
@@ -44,6 +48,11 @@ public class StartupActivity extends AppCompatActivity implements AdapterView.On
 
     private void showAudioSelectionActivity() {
         Intent intent = new Intent(this, AudioSelectionActivity.class);
+        startActivity(intent);
+    }
+
+    private void showRecyclerVideoActivity() {
+        Intent intent = new Intent(this, RecyclerVideoActivity.class);
         startActivity(intent);
     }
 }

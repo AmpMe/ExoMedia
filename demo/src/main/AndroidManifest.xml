@@ -42,6 +42,7 @@
             android:name=".ui.activity.AudioPlayerActivity"
             android:label="@string/title_activity_audio_player">
         </activity>
+        <activity android:name=".ui.activity.RecyclerVideoActivity"/>
 
 
         <service

@@ -6,7 +6,10 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     // Playlist support
-    compile 'com.devbrackets.android:playlistcore:1.0.2'
+    compile 'com.devbrackets.android:playlistcore:1.1.1'
+
+    //RecyclerView support
+    compile 'com.devbrackets.android:recyclerext:1.1.1'
 }
 
 android {

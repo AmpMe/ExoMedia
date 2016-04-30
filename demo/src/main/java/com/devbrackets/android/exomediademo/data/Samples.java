@@ -26,6 +26,7 @@ public class Samples {
 
         //Video items
         videoSamples = new ArrayList<>();
+        videoSamples.add(new Sample("Issue 128", "https://onex1.blob.core.windows.net/posts/3-android-post-item-1456900560.mp4"));
         videoSamples.add(new Sample("3GP - Big Buck Bunny by Blender", "http://www.sample-videos.com/video/3gp/240/big_buck_bunny_240p_10mb.3gp"));
 //        videoSamples.add(new Sample("FLV - Big Buck Bunny by Blender", "http://www.sample-videos.com/video/flv/720/big_buck_bunny_720p_5mb.flv"));
         videoSamples.add(new Sample("HLS - Wildlife", "http://playertest.longtailvideo.com/adaptive/wowzaid3/playlist.m3u8"));

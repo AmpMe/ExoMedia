@@ -34,6 +34,7 @@ import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -122,6 +123,10 @@ public class ExoVideoDelegate {
     public void pause() {
         exoMediaPlayer.setPlayWhenReady(false);
         playRequested = false;
+    }
+
+    public void setMediaClock(MediaClock mediaClock) {
+        exoMediaPlayer.setMediaClock(mediaClock);
     }
 
     /**

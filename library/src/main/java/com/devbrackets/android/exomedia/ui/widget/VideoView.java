@@ -58,6 +58,7 @@ import com.devbrackets.android.exomedia.util.StopWatch;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -270,6 +271,11 @@ public class VideoView extends RelativeLayout {
         if (videoControls != null) {
             videoControls.showLoading(true);
         }
+    }
+
+    public void setVideoURI(@Nullable Uri uri, MediaClock mediaClock) {
+        videoViewImpl.setMediaClock(mediaClock);
+        setVideoURI(uri);
     }
 
     /**

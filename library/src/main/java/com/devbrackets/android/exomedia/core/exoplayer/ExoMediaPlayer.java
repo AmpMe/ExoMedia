@@ -73,6 +73,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.util.MediaClock;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.ArrayList;
@@ -139,6 +140,7 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
     @NonNull
     private CapabilitiesListener capabilitiesListener = new CapabilitiesListener();
     private int audioSessionId = C.AUDIO_SESSION_ID_UNSET;
+    private MediaClock mediaClock;
 
     public ExoMediaPlayer(@NonNull Context context) {
         this.context = context;
@@ -591,6 +593,10 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
         } else {
             bufferRepeater.stop();
         }
+    }
+
+    public void setMediaClock(MediaClock mediaClock) {
+        player.setMediaClock(mediaClock);
     }
 
     private static class StateStore {

@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'maven'
-apply plugin: 'com.novoda.bintray-release'
 
 def versionMajor = 4
 def versionMinor = 0
@@ -15,10 +13,16 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
 
     // ExoPlayer
-    compile 'com.google.android.exoplayer:exoplayer-core:r2.4.0'
-    compile 'com.google.android.exoplayer:exoplayer-dash:r2.4.0'
-    compile 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
-    compile 'com.google.android.exoplayer:exoplayer-smoothstreaming:r2.4.0'
+    compile project(':library-core')
+    compile('com.google.android.exoplayer:exoplayer-dash:r2.4.0') {
+        exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
+    }
+    compile('com.google.android.exoplayer:exoplayer-hls:r2.4.0') {
+        exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
+    }
+    compile('com.google.android.exoplayer:exoplayer-smoothstreaming:r2.4.0') {
+        exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
+    }
 }
 
 android {
@@ -51,30 +55,4 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-}
-
-// ======== MAVEN DEPLOY to local cache or nexus repo (to make accessible to local projects) (command: ./gradlew clean aRel uploadArchives) ========
-uploadArchives {
-    repositories {
-        // deploy to local
-        mavenDeployer {
-            repository (url: "file://${System.env.HOME}/.m2/repository/")
-            pom.groupId = libraryGroupId
-            pom.artifactId = libraryBaseName
-            pom.version = libraryVersion //Normally I would append "-SNAPSHOT" but newer gradle/maven can't always find them
-            pom.packaging = 'aar'
-            uniqueVersion = false // don't put in a timestamp on the filename (other project will not be able to depend on it)
-        }
-    }
-}
-
-//todo Until the next Bintray-upload is published we can't updated past Gradle 3.3; see https://github.com/novoda/bintray-release/issues/112
-// ======= BINTRAY DEPLOY (command: $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false) ====
-publish {
-    groupId = libraryGroupId
-    artifactId = libraryBaseName
-    uploadName = 'ExoMedia'
-    version = libraryVersion
-    autoPublish = false
-    dryRun = false
 }

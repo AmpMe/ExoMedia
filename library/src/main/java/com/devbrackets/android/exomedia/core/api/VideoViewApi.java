@@ -29,6 +29,7 @@ import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -140,4 +141,6 @@ public interface VideoViewApi {
     void setListenerMux(ListenerMux listenerMux);
 
     void onVideoSizeChanged(int width, int height);
+
+    void setMediaClock(MediaClock mediaClock);
 }

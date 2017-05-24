@@ -57,11 +57,11 @@ public class ExoVideoDelegate {
         setup();
     }
 
-    public void setVideoUri(@Nullable Uri uri) {
-        setVideoUri(uri, null);
+    public void setVideoUri(@Nullable Uri uri, boolean loop) {
+        setVideoUri(uri, null, loop);
     }
 
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, boolean loop) {
         //Makes sure the listeners get the onPrepared callback
         listenerMux.setNotifiedPrepared(false);
         exoMediaPlayer.seekTo(0);
@@ -70,7 +70,7 @@ public class ExoVideoDelegate {
             exoMediaPlayer.setMediaSource(mediaSource);
             listenerMux.setNotifiedCompleted(false);
         } else if (uri != null) {
-            exoMediaPlayer.setUri(uri);
+            exoMediaPlayer.setUri(uri, loop);
             listenerMux.setNotifiedCompleted(false);
         } else {
             exoMediaPlayer.setMediaSource(null);

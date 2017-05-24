@@ -62,6 +62,7 @@ import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
+import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.Cue;
@@ -213,8 +214,13 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
         this.drmCallback = drmCallback;
     }
 
-    public void setUri(@Nullable Uri uri) {
-        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, bandwidthMeter) : null);
+    public void setUri(@Nullable Uri uri, boolean loop) {
+        MediaSource mediaSource = uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, bandwidthMeter) : null;
+        if (loop) {
+            setMediaSource(new LoopingMediaSource(mediaSource));
+        } else {
+            setMediaSource(mediaSource);
+        }
     }
 
     public void setMediaSource(@Nullable MediaSource source) {

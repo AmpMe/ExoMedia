@@ -259,18 +259,22 @@ public class VideoView extends RelativeLayout {
         return videoControls;
     }
 
+    public void setVideoURI(@Nullable Uri uri, boolean loop) {
+        videoUri = uri;
+        videoViewImpl.setVideoUri(uri, loop);
+
+        if (videoControls != null) {
+            videoControls.showLoading(true);
+        }
+    }
+
     /**
      * Sets the Uri location for the video to play
      *
      * @param uri The video's Uri
      */
     public void setVideoURI(@Nullable Uri uri) {
-        videoUri = uri;
-        videoViewImpl.setVideoUri(uri);
-
-        if (videoControls != null) {
-            videoControls.showLoading(true);
-        }
+        setVideoURI(uri, false);
     }
 
     public void setVideoURI(@Nullable Uri uri, MediaClock mediaClock) {
@@ -286,7 +290,7 @@ public class VideoView extends RelativeLayout {
      */
     public void setVideoURI(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
         videoUri = uri;
-        videoViewImpl.setVideoUri(uri, mediaSource);
+        videoViewImpl.setVideoUri(uri, mediaSource, false);
 
         if (videoControls != null) {
             videoControls.showLoading(true);

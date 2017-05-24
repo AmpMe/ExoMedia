@@ -67,13 +67,13 @@ public class ExoTextureVideoView extends ResizingTextureView implements VideoVie
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri) {
-        delegate.setVideoUri(uri);
+    public void setVideoUri(@Nullable Uri uri, boolean loop) {
+        delegate.setVideoUri(uri, loop);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
-        delegate.setVideoUri(uri, mediaSource);
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, boolean loop) {
+        delegate.setVideoUri(uri, mediaSource, loop);
     }
 
     @Override

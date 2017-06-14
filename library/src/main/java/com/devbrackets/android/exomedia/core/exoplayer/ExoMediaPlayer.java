@@ -41,6 +41,7 @@ import com.devbrackets.android.exomedia.core.listener.MetadataListener;
 import com.devbrackets.android.exomedia.core.renderer.RendererProvider;
 import com.devbrackets.android.exomedia.core.source.MediaSourceProvider;
 import com.devbrackets.android.exomedia.listener.OnBufferUpdateListener;
+import com.devbrackets.android.exomedia.listener.OnLoopListener;
 import com.devbrackets.android.exomedia.util.Repeater;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -118,6 +119,8 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
     @Nullable
     private MediaDrmCallback drmCallback;
     @Nullable
+    private OnLoopListener onLoopListener;
+    @Nullable
     private MediaSource mediaSource;
     @NonNull
     private List<Renderer> renderers = new LinkedList<>();
@@ -172,7 +175,9 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        // Purposefully left blank
+        if (onLoopListener != null) {
+            onLoopListener.onLoop();
+        }
     }
 
     @Override
@@ -212,6 +217,11 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
      */
     public void setDrmCallback(@Nullable MediaDrmCallback drmCallback) {
         this.drmCallback = drmCallback;
+    }
+
+
+    public void setOnLoopListener(@Nullable OnLoopListener onLoopListener) {
+        this.onLoopListener = onLoopListener;
     }
 
     public void setUri(@Nullable Uri uri, boolean loop) {

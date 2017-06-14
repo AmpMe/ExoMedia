@@ -50,6 +50,7 @@ import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
 import com.devbrackets.android.exomedia.listener.OnBufferUpdateListener;
 import com.devbrackets.android.exomedia.listener.OnCompletionListener;
 import com.devbrackets.android.exomedia.listener.OnErrorListener;
+import com.devbrackets.android.exomedia.listener.OnLoopListener;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.listener.OnSeekCompletionListener;
 import com.devbrackets.android.exomedia.listener.OnVideoSizeChangedListener;
@@ -671,6 +672,16 @@ public class VideoView extends RelativeLayout {
      */
     public void setOnVideoSizedChangedListener(@Nullable OnVideoSizeChangedListener listener) {
         muxNotifier.videoSizeChangedListener = listener;
+    }
+
+
+    /**
+     * Sets the listener to inform of video starting a new loop
+     *
+     * @param listener The listener
+     */
+    public void setLoopListener(@Nullable OnLoopListener listener) {
+        listenerMux.setOnLoopListener(listener);
     }
 
     /**

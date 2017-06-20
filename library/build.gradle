@@ -1,3 +1,7 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
+apply plugin: 'maven'
 apply plugin: 'com.android.library'
 
 def versionMajor = 4
@@ -8,12 +12,27 @@ def libraryGroupId = 'com.devbrackets.android'
 def libraryBaseName = 'exomedia'
 def libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
+
+group libraryGroupId
+version = libraryVersion
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    }
+}
+
 dependencies {
     // Android
     compile 'com.android.support:appcompat-v7:25.3.1'
 
     // ExoPlayer
-    compile project(':library-core')
+    compile project(':exoplayer-core')
     compile('com.google.android.exoplayer:exoplayer-dash:r2.4.0') {
         exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
     }
@@ -54,5 +73,66 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+    task sourcesJar(type: Jar) {
+        from android.sourceSets.main.java.srcDirs
+        classifier = 'sources'
+    }
+
+    task javadoc(type: Javadoc) {
+        failOnError false
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives javadocJar
+        archives sourcesJar
+    }
+}
+
+bintray {
+    user = System.properties['bintray.user']
+    key = System.properties['bintray.key']
+    pkg {
+        name = 'exomedia'
+        repo = 'maven'
+        userOrg = 'ampme'
+    }
+    publish = true
+    configurations = ['archives']
+}
+
+afterEvaluate {
+    project.bintray {
+        publish = true
+        pkg {
+            userOrg = 'ampme'
+        }
+    }
+}
+
+install {
+    repositories {
+        mavenInstaller {
+            pom {
+                artifactId = 'exomedia'
+                project {
+                    packaging 'aar'
+                }
+            }
+        }
     }
 }

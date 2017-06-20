@@ -1,7 +1,3 @@
-include ':library', ':demo', ':exoplayer-core', ':exoplayer-dash', ':exoplayer-hls', ':exoplayer-smoothstreaming'
-
-
+include ':exomedia', ':exoplayer-core'
+project(':exomedia').projectDir = new File('library')
 project(':exoplayer-core').projectDir = new File('submodules/ExoPlayer/library/core')
-project(':exoplayer-dash').projectDir = new File('submodules/ExoPlayer/library/dash')
-project(':exoplayer-hls').projectDir = new File('submodules/ExoPlayer/library/hls')
-project(':exoplayer-smoothstreaming').projectDir = new File('submodules/ExoPlayer/library/smoothstreaming')

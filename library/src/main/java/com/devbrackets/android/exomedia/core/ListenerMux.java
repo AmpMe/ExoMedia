@@ -30,6 +30,7 @@ import com.devbrackets.android.exomedia.core.video.ClearableSurface;
 import com.devbrackets.android.exomedia.listener.OnBufferUpdateListener;
 import com.devbrackets.android.exomedia.listener.OnCompletionListener;
 import com.devbrackets.android.exomedia.listener.OnErrorListener;
+import com.devbrackets.android.exomedia.listener.OnLoopListener;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.listener.OnSeekCompletionListener;
 import com.google.android.exoplayer2.ExoPlayer;
@@ -43,7 +44,7 @@ import java.lang.ref.WeakReference;
  * error listeners.
  */
 public class ListenerMux implements ExoPlayerListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener,
-        MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnSeekCompleteListener, OnBufferUpdateListener, MetadataListener {
+        MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnSeekCompleteListener, OnBufferUpdateListener, MetadataListener, OnLoopListener {
     //The amount of time the current position can be off the duration to call the onCompletion listener
     private static final long COMPLETED_DURATION_LEEWAY = 1000;
 
@@ -58,6 +59,8 @@ public class ListenerMux implements ExoPlayerListener, MediaPlayer.OnPreparedLis
     private OnCompletionListener completionListener;
     @Nullable
     private OnBufferUpdateListener bufferUpdateListener;
+    @Nullable
+    private OnLoopListener loopListener;
     @Nullable
     private OnSeekCompletionListener seekCompletionListener;
     @Nullable
@@ -209,6 +212,16 @@ public class ListenerMux implements ExoPlayerListener, MediaPlayer.OnPreparedLis
     }
 
     /**
+     * Sets the listener to inform of loop updates
+     * Will be triggered anytime a loop is completed
+     *
+     * @param listener The listener to inform
+     */
+    public void setOnLoopListener(@Nullable OnLoopListener listener) {
+        loopListener = listener;
+    }
+
+    /**
      * Sets the listener to inform of VideoPlayer seek completion events
      *
      * @param listener The listener to inform
@@ -303,6 +316,14 @@ public class ListenerMux implements ExoPlayerListener, MediaPlayer.OnPreparedLis
             }
         });
     }
+
+    @Override
+    public void onLoop() {
+        if (loopListener != null) {
+            loopListener.onLoop();
+        }
+    }
+
 
     public static abstract class Notifier {
         public void onSeekComplete() {

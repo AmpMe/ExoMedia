@@ -41,6 +41,7 @@ import com.devbrackets.android.exomedia.core.listener.MetadataListener;
 import com.devbrackets.android.exomedia.core.renderer.RendererProvider;
 import com.devbrackets.android.exomedia.core.source.MediaSourceProvider;
 import com.devbrackets.android.exomedia.listener.OnBufferUpdateListener;
+import com.devbrackets.android.exomedia.listener.OnLoopListener;
 import com.devbrackets.android.exomedia.util.Repeater;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -62,6 +63,7 @@ import com.google.android.exoplayer2.drm.FrameworkMediaDrm;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.metadata.Metadata;
 import com.google.android.exoplayer2.metadata.MetadataRenderer;
+import com.google.android.exoplayer2.source.LoopingMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.Cue;
@@ -73,6 +75,7 @@ import com.google.android.exoplayer2.trackselection.MappingTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.util.MediaClock;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
 
 import java.util.ArrayList;
@@ -116,6 +119,8 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
     @Nullable
     private MediaDrmCallback drmCallback;
     @Nullable
+    private OnLoopListener onLoopListener;
+    @Nullable
     private MediaSource mediaSource;
     @NonNull
     private List<Renderer> renderers = new LinkedList<>();
@@ -139,6 +144,7 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
     @NonNull
     private CapabilitiesListener capabilitiesListener = new CapabilitiesListener();
     private int audioSessionId = C.AUDIO_SESSION_ID_UNSET;
+    private MediaClock mediaClock;
 
     public ExoMediaPlayer(@NonNull Context context) {
         this.context = context;
@@ -169,7 +175,9 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
 
     @Override
     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-        // Purposefully left blank
+        if (onLoopListener != null) {
+            onLoopListener.onLoop();
+        }
     }
 
     @Override
@@ -211,8 +219,18 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
         this.drmCallback = drmCallback;
     }
 
-    public void setUri(@Nullable Uri uri) {
-        setMediaSource(uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, bandwidthMeter) : null);
+
+    public void setOnLoopListener(@Nullable OnLoopListener onLoopListener) {
+        this.onLoopListener = onLoopListener;
+    }
+
+    public void setUri(@Nullable Uri uri, boolean loop) {
+        MediaSource mediaSource = uri != null ? mediaSourceProvider.generate(context, mainHandler, uri, bandwidthMeter) : null;
+        if (loop) {
+            setMediaSource(new LoopingMediaSource(mediaSource));
+        } else {
+            setMediaSource(mediaSource);
+        }
     }
 
     public void setMediaSource(@Nullable MediaSource source) {
@@ -591,6 +609,10 @@ public class ExoMediaPlayer implements ExoPlayer.EventListener {
         } else {
             bufferRepeater.stop();
         }
+    }
+
+    public void setMediaClock(MediaClock mediaClock) {
+        player.setMediaClock(mediaClock);
     }
 
     private static class StateStore {

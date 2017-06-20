@@ -33,7 +33,6 @@ public class DeviceUtil {
 
     static {
         NON_COMPATIBLE_DEVICES = new LinkedList<>();
-        NON_COMPATIBLE_DEVICES.add(new NonCompatibleDevice("Amazon"));
     }
 
     @SuppressWarnings("SimplifiableIfStatement")

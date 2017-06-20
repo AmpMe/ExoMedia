@@ -36,6 +36,7 @@ import com.devbrackets.android.exomedia.core.video.ResizingSurfaceView;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -133,12 +134,12 @@ public class NativeSurfaceVideoView extends ResizingSurfaceView implements Nativ
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri) {
-        setVideoUri(uri, null);
+    public void setVideoUri(@Nullable Uri uri, boolean loop) {
+        setVideoUri(uri, null, loop);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, boolean loop) {
         setVideoURI(uri);
     }
 
@@ -203,6 +204,10 @@ public class NativeSurfaceVideoView extends ResizingSurfaceView implements Nativ
         if (updateVideoSize(width, height)) {
             requestLayout();
         }
+    }
+
+    @Override
+    public void setMediaClock(MediaClock mediaClock) {
     }
 
     /**

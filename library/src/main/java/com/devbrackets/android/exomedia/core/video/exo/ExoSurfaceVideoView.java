@@ -33,6 +33,7 @@ import com.devbrackets.android.exomedia.core.video.ResizingSurfaceView;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -65,13 +66,13 @@ public class ExoSurfaceVideoView extends ResizingSurfaceView implements VideoVie
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri) {
-        delegate.setVideoUri(uri);
+    public void setVideoUri(@Nullable Uri uri, boolean loop) {
+        delegate.setVideoUri(uri, loop);
     }
 
     @Override
-    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
-        delegate.setVideoUri(uri, mediaSource);
+    public void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, boolean loop) {
+        delegate.setVideoUri(uri, mediaSource, loop);
     }
 
     @Override
@@ -170,6 +171,11 @@ public class ExoSurfaceVideoView extends ResizingSurfaceView implements VideoVie
         if (updateVideoSize(width, height)) {
             requestLayout();
         }
+    }
+
+    @Override
+    public void setMediaClock(MediaClock mediaClock) {
+        delegate.setMediaClock(mediaClock);
     }
 
     protected void setup() {

@@ -50,6 +50,7 @@ import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
 import com.devbrackets.android.exomedia.listener.OnBufferUpdateListener;
 import com.devbrackets.android.exomedia.listener.OnCompletionListener;
 import com.devbrackets.android.exomedia.listener.OnErrorListener;
+import com.devbrackets.android.exomedia.listener.OnLoopListener;
 import com.devbrackets.android.exomedia.listener.OnPreparedListener;
 import com.devbrackets.android.exomedia.listener.OnSeekCompletionListener;
 import com.devbrackets.android.exomedia.listener.OnVideoSizeChangedListener;
@@ -58,6 +59,7 @@ import com.devbrackets.android.exomedia.util.StopWatch;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -258,14 +260,9 @@ public class VideoView extends RelativeLayout {
         return videoControls;
     }
 
-    /**
-     * Sets the Uri location for the video to play
-     *
-     * @param uri The video's Uri
-     */
-    public void setVideoURI(@Nullable Uri uri) {
+    public void setVideoURI(@Nullable Uri uri, boolean loop) {
         videoUri = uri;
-        videoViewImpl.setVideoUri(uri);
+        videoViewImpl.setVideoUri(uri, loop);
 
         if (videoControls != null) {
             videoControls.showLoading(true);
@@ -276,11 +273,25 @@ public class VideoView extends RelativeLayout {
      * Sets the Uri location for the video to play
      *
      * @param uri The video's Uri
+     */
+    public void setVideoURI(@Nullable Uri uri) {
+        setVideoURI(uri, false);
+    }
+
+    public void setVideoURI(@Nullable Uri uri, MediaClock mediaClock) {
+        videoViewImpl.setMediaClock(mediaClock);
+        setVideoURI(uri);
+    }
+
+    /**
+     * Sets the Uri location for the video to play
+     *
+     * @param uri The video's Uri
      * @param mediaSource MediaSource that should be used
      */
     public void setVideoURI(@Nullable Uri uri, @Nullable MediaSource mediaSource) {
         videoUri = uri;
-        videoViewImpl.setVideoUri(uri, mediaSource);
+        videoViewImpl.setVideoUri(uri, mediaSource, false);
 
         if (videoControls != null) {
             videoControls.showLoading(true);
@@ -661,6 +672,16 @@ public class VideoView extends RelativeLayout {
      */
     public void setOnVideoSizedChangedListener(@Nullable OnVideoSizeChangedListener listener) {
         muxNotifier.videoSizeChangedListener = listener;
+    }
+
+
+    /**
+     * Sets the listener to inform of video starting a new loop
+     *
+     * @param listener The listener
+     */
+    public void setLoopListener(@Nullable OnLoopListener listener) {
+        listenerMux.setOnLoopListener(listener);
     }
 
     /**

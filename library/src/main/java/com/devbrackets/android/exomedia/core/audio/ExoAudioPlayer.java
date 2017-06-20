@@ -81,7 +81,7 @@ public class ExoAudioPlayer implements AudioPlayerApi {
             exoMediaPlayer.setMediaSource(mediaSource);
             listenerMux.setNotifiedCompleted(false);
         } else if (uri != null) {
-            exoMediaPlayer.setUri(uri);
+            exoMediaPlayer.setUri(uri, false);
             listenerMux.setNotifiedCompleted(false);
         } else {
             exoMediaPlayer.setMediaSource(null);

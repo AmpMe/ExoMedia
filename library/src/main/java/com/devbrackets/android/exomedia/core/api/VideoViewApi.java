@@ -29,6 +29,7 @@ import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
 import com.google.android.exoplayer2.drm.MediaDrmCallback;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.util.MediaClock;
 
 import java.util.Map;
 
@@ -48,9 +49,9 @@ public interface VideoViewApi {
 
     int getWidth();
 
-    void setVideoUri(@Nullable Uri uri);
+    void setVideoUri(@Nullable Uri uri, boolean loop);
 
-    void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource);
+    void setVideoUri(@Nullable Uri uri, @Nullable MediaSource mediaSource, boolean loop);
 
     /**
      * Sets the {@link MediaDrmCallback} to use when handling DRM for media.
@@ -140,4 +141,6 @@ public interface VideoViewApi {
     void setListenerMux(ListenerMux listenerMux);
 
     void onVideoSizeChanged(int width, int height);
+
+    void setMediaClock(MediaClock mediaClock);
 }

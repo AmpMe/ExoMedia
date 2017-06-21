@@ -1,8 +1,6 @@
-apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'maven-publish'
-apply plugin: 'maven'
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
 
 def versionMajor = 4
 def versionMinor = 99
@@ -11,21 +9,6 @@ def versionPatch = 1
 def libraryGroupId = 'com.devbrackets.android'
 def libraryBaseName = 'exomedia'
 def libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
-
-
-group libraryGroupId
-version = libraryVersion
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.2'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-    }
-}
 
 repositories {
     maven {
@@ -84,64 +67,34 @@ android {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
-
-    task sourcesJar(type: Jar) {
-        from android.sourceSets.main.java.srcDirs
-        classifier = 'sources'
-    }
-
-    task javadoc(type: Javadoc) {
-        failOnError false
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives javadocJar
-        archives sourcesJar
-    }
 }
 
-bintray {
-    user = System.properties['bintray.user']
-    key = System.properties['bintray.key']
-    pkg {
-        name = 'exomedia'
-        repo = 'maven'
-        userOrg = 'ampme'
-    }
-    publish = true
-    configurations = ['archives']
-}
-
-afterEvaluate {
-    project.bintray {
-        publish = true
-        pkg {
-            userOrg = 'ampme'
-        }
-    }
-}
-
-install {
+// ======== MAVEN DEPLOY to local cache or nexus repo (to make accessible to local projects) (command: ./gradlew clean aRel uploadArchives) ========
+uploadArchives {
     repositories {
-        mavenInstaller {
-            pom {
-                project {
-                    packaging 'aar'
-                }
-            }
+        // deploy to local
+        mavenDeployer {
+            repository(url: "file://${System.env.HOME}/.m2/repository/")
+            pom.groupId = libraryGroupId
+            pom.artifactId = libraryBaseName
+            pom.version = libraryVersion
+            //Normally I would append "-SNAPSHOT" but newer gradle/maven can't always find them
+            pom.packaging = 'aar'
+            uniqueVersion = false
+            // don't put in a timestamp on the filename (other project will not be able to depend on it)
         }
     }
+}
+
+// ======= BINTRAY DEPLOY (command: $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false) ====
+publish {
+    userOrg = 'ampme'
+    groupId = libraryGroupId
+    artifactId = libraryBaseName
+    uploadName = 'ExoMedia'
+    version = libraryVersion
+    autoPublish = false
+    dryRun = false
+    bintrayUser = System.properties['bintray.user']
+    bintrayKey = System.properties['bintray.key']
 }

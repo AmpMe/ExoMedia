@@ -1,3 +1,1 @@
-include ':exomedia', ':exoplayer-core'
-project(':exomedia').projectDir = new File('library')
-project(':exoplayer-core').projectDir = new File('submodules/ExoPlayer/library/core')
+include 'library'

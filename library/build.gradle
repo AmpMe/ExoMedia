@@ -5,7 +5,7 @@ apply plugin: 'maven'
 apply plugin: 'com.android.library'
 
 def versionMajor = 4
-def versionMinor = 0
+def versionMinor = 99
 def versionPatch = 1
 
 def libraryGroupId = 'com.devbrackets.android'
@@ -27,12 +27,22 @@ buildscript {
     }
 }
 
+repositories {
+    maven {
+        url("https://ampme.bintray.com/maven")
+        credentials {
+            username System.properties['bintray.user']
+            password System.properties['bintray.key']
+        }
+    }
+}
+
 dependencies {
     // Android
     compile 'com.android.support:appcompat-v7:25.3.1'
 
     // ExoPlayer
-    compile project(':exoplayer-core')
+    compile('com.google.android.exoplayer:library-core:r2.99.0')
     compile('com.google.android.exoplayer:exoplayer-dash:r2.4.0') {
         exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
     }
@@ -128,7 +138,6 @@ install {
     repositories {
         mavenInstaller {
             pom {
-                artifactId = 'exomedia'
                 project {
                     packaging 'aar'
                 }

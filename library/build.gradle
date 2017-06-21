@@ -93,7 +93,7 @@ publish {
     artifactId = libraryBaseName
     uploadName = 'ExoMedia'
     version = libraryVersion
-    autoPublish = false
+    autoPublish = true
     dryRun = false
     bintrayUser = System.properties['bintray.user']
     bintrayKey = System.properties['bintray.key']

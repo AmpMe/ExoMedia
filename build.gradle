@@ -1,16 +1,18 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
-        classpath 'com.novoda:bintray-release:0.4.0'
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.novoda:bintray-release:0.5.0'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
+        google()
     }
     project.ext {
         // For ExoPlayer
@@ -23,4 +25,9 @@ allprojects {
         dexmakerVersion = '1.2'
         mockitoVersion = '1.9.5'
     }
+}
+
+ext {
+    exoPlayerVersion = "2.6.0"
+    supportLibVersion = "27.0.2"
 }

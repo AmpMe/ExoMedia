@@ -3,8 +3,8 @@ apply plugin: 'maven'
 apply plugin: 'com.novoda.bintray-release'
 
 def versionMajor = 4
-def versionMinor = 1
-def versionPatch = 99
+def versionMinor = 2
+def versionPatch = 099
 
 def libraryGroupId = 'com.devbrackets.android'
 def libraryBaseName = 'exomedia'

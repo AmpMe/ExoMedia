@@ -21,18 +21,18 @@ repositories {
 }
 
 dependencies {
-    compile "com.android.support:support-media-compat:$rootProject.ext.supportLibVersion"
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
+    implementation "com.android.support:support-media-compat:$rootProject.ext.supportLibVersion"
+    implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
 
     // ExoPlayer
-    compile("com.google.android.exoplayer:library-core:r2.99.1")
-    compile("com.google.android.exoplayer:exoplayer-dash:$rootProject.ext.exoPlayerVersion") {
+    api("com.google.android.exoplayer:library-core:r2.7.399")
+    api("com.google.android.exoplayer:exoplayer-dash:$rootProject.ext.exoPlayerVersion") {
         exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
     }
-    compile("com.google.android.exoplayer:exoplayer-hls:$rootProject.ext.exoPlayerVersion") {
+    api("com.google.android.exoplayer:exoplayer-hls:$rootProject.ext.exoPlayerVersion") {
         exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
     }
-    compile("com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.ext.exoPlayerVersion") {
+    api("com.google.android.exoplayer:exoplayer-smoothstreaming:$rootProject.ext.exoPlayerVersion") {
         exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
     }
 }
@@ -83,7 +83,8 @@ publish {
     groupId = libraryGroupId
     artifactId = libraryBaseName
     uploadName = 'ExoMedia'
-    version = libraryVersion
+    publishVersion = libraryVersion
+    desc = ""
     autoPublish = true
     dryRun = false
     bintrayUser = System.properties['bintray.user']

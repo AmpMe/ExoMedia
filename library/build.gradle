@@ -4,7 +4,7 @@ apply plugin: 'com.novoda.bintray-release'
 
 def versionMajor = 4
 def versionMinor = 2
-def versionPatch = 100
+def versionPatch = 101
 
 def libraryGroupId = 'com.devbrackets.android'
 def libraryBaseName = 'exomedia'
@@ -25,7 +25,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$rootProject.ext.supportLibVersion"
 
     // ExoPlayer
-    api("com.google.android.exoplayer:library-core:r2.7.399")
+    api("com.google.android.exoplayer:library-core:r2.7.3101")
     api("com.google.android.exoplayer:exoplayer-dash:$rootProject.ext.exoPlayerVersion") {
         exclude group: 'com.google.android.exoplayer', module: 'exoplayer-core'
     }

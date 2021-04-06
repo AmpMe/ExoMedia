@@ -1,10 +1,10 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
-apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven-publish'
 
 def versionMajor = 4
 def versionMinor = 2
-def versionPatch = 102
+def versionPatch = 103
 
 def libraryGroupId = 'com.devbrackets.android'
 def libraryBaseName = 'exomedia'
@@ -12,10 +12,10 @@ def libraryVersion = "${versionMajor}.${versionMinor}.${versionPatch}"
 
 repositories {
     maven {
-        url("https://ampme.bintray.com/maven")
+        url("https://maven.pkg.github.com/AmpMe/maven")
         credentials {
-            username System.properties['bintray.user']
-            password System.properties['bintray.key']
+            username = System.properties['github.user']
+            password = System.properties['github.key']
         }
     }
 }
@@ -78,15 +78,23 @@ uploadArchives {
 }
 
 // ======= BINTRAY DEPLOY (command: $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false) ====
-publish {
-    userOrg = 'ampme'
-    groupId = libraryGroupId
-    artifactId = libraryBaseName
-    uploadName = 'ExoMedia'
-    publishVersion = libraryVersion
-    desc = ""
-    autoPublish = true
-    dryRun = false
-    bintrayUser = System.properties['bintray.user']
-    bintrayKey = System.properties['bintray.key']
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/AmpMe/maven")
+            credentials {
+                username = System.properties['github.user']
+                password = System.properties['github.key']
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId libraryGroupId
+            artifactId libraryBaseName
+            version libraryVersion
+            artifact("$buildDir/outputs/aar/library-release.aar")
+        }
+    }
 }

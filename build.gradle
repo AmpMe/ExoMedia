@@ -1,6 +1,6 @@
 buildscript {
-    System.setProperty("github.user", System.getenv("AMPME_USER") ?: getProperty('ampme.user'))
-    System.setProperty("github.key", System.getenv("AMPME_KEY") ?: getProperty('ampme.key'))
+    System.setProperty("github.user", System.getenv("AMPME_GITHUB_USER") ?: getProperty('ampme.user'))
+    System.setProperty("github.key", System.getenv("AMPME_GITHUB_TOKEN") ?: getProperty('ampme.key'))
 
     repositories {
         jcenter()

@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 
 def versionMajor = 4
 def versionMinor = 2
-def versionPatch = 103
+def versionPatch = 105
 
 def libraryGroupId = 'com.devbrackets.android'
 def libraryBaseName = 'exomedia'
@@ -61,40 +61,45 @@ android {
 }
 
 // ======== MAVEN DEPLOY to local cache or nexus repo (to make accessible to local projects) (command: ./gradlew clean aRel uploadArchives) ========
-uploadArchives {
-    repositories {
-        // deploy to local
-        mavenDeployer {
-            repository(url: "file://${System.env.HOME}/.m2/repository/")
-            pom.groupId = libraryGroupId
-            pom.artifactId = libraryBaseName
-            pom.version = libraryVersion
-            //Normally I would append "-SNAPSHOT" but newer gradle/maven can't always find them
-            pom.packaging = 'aar'
-            uniqueVersion = false
-            // don't put in a timestamp on the filename (other project will not be able to depend on it)
-        }
-    }
-}
+//uploadArchives {
+//    repositories {
+//        // deploy to local
+//        mavenDeployer {
+//            repository(url: "file://${System.env.HOME}/.m2/repository/")
+//            pom.groupId = libraryGroupId
+//            pom.artifactId = libraryBaseName
+//            pom.version = libraryVersion
+//            //Normally I would append "-SNAPSHOT" but newer gradle/maven can't always find them
+//            pom.packaging = 'aar'
+////            uniqueVersion = false
+//            // don't put in a timestamp on the filename (other project will not be able to depend on it)
+//        }
+//    }
+//}
 
 // ======= BINTRAY DEPLOY (command: $ ./gradlew clean build bintrayUpload -PbintrayUser=BINTRAY_USERNAME -PbintrayKey=BINTRAY_KEY -PdryRun=false) ====
-publishing {
-    repositories {
-        maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/AmpMe/maven")
-            credentials {
-                username = System.properties['github.user']
-                password = System.properties['github.key']
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/AmpMe/maven")
+                credentials {
+                    username = System.properties['github.user']
+                    password = System.properties['github.key']
+                }
             }
         }
-    }
-    publications {
-        gpr(MavenPublication) {
-            groupId libraryGroupId
-            artifactId libraryBaseName
-            version libraryVersion
-            artifact("$buildDir/outputs/aar/library-release.aar")
+        publications {
+            release(MavenPublication) {
+                // Applies the component for the release build variant.
+                from components.release
+
+                groupId libraryGroupId
+                artifactId libraryBaseName
+                version libraryVersion
+//            artifact("$buildDir/outputs/aar/library-release.aar")
+            }
         }
     }
 }
